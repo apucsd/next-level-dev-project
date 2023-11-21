@@ -1,3 +1,5 @@
+import { Model } from 'mongoose';
+
 export type UserName = {
   firstName: string;
   middleName: string;
@@ -20,8 +22,9 @@ export type LocalGuardian = {
 
 export type Student = {
   id: string;
+  password: string;
   name: UserName;
-  gender: 'male' | 'female';
+  gender: 'male' | 'female' | 'other';
   dateOfBirth: string;
   contactNo: string;
   emergencyNo: string;
@@ -34,4 +37,15 @@ export type Student = {
   localGuardian: LocalGuardian;
   profileImg?: string;
   isActive: 'active' | 'blocked';
+  isDeleted: boolean;
 };
+
+export type StudentMethods = {
+  isExists(id: string): Promise<Student | null>;
+};
+
+export type StudentModel = Model<
+  Student,
+  Record<string, never>,
+  StudentMethods
+>;
