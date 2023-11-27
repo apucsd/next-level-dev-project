@@ -1,17 +1,6 @@
 import { Student } from './student.interface';
 import StudentModel from './student.model';
 
-const createStudentIntoDB = async (studentData: Student) => {
-  const result = await StudentModel.create(studentData);
-  // const result = await StudentModel.create(student); //build in mongoose static method
-  // const student = new StudentModel(studentData);
-  // const result = await student.save();
-
-  // if (await student.isExists(studentData.id)) {
-  //   throw new Error('Student is already exits');
-  // }
-  return result;
-};
 const getStudentFromDB = async () => {
   const result = await StudentModel.find();
   return result;
@@ -28,7 +17,6 @@ const deleteStudent = async (id: string) => {
 };
 
 export const studentServices = {
-  createStudentIntoDB,
   getStudentFromDB,
   getSingleStudentFromDB,
   deleteStudent,

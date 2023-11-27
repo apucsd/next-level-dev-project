@@ -5,7 +5,6 @@ import {
   Guardian,
   LocalGuardian,
   Student,
-  StudentMethods,
   StudentModel,
   UserName,
 } from './student.interface';
@@ -55,6 +54,12 @@ const localGuardian = new Schema<LocalGuardian>({
 const studentSchema = new Schema<Student, StudentModel>(
   {
     id: { type: String, unique: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      unique: true,
+      ref: 'User',
+    },
     password: { type: String, unique: true },
     name: {
       type: userSchema,
@@ -87,11 +92,6 @@ const studentSchema = new Schema<Student, StudentModel>(
       required: true,
     },
     profileImg: { type: String, required: true },
-    isActive: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
-    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -106,14 +106,6 @@ const studentSchema = new Schema<Student, StudentModel>(
 
 //using middleware hooks pre and post : its work on create method
 studentSchema.pre('save', async function () {
-  console.log(`
-  
-  
-  
-  ///////////////////////////////////////////////////////////////////////////
-
-  ${this}
-  `);
   const data = this;
   data.password = await bcrypt.hash(data.password, Number(config.salt_rounds));
 });
