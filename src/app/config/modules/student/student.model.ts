@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
-import bcrypt from 'bcrypt';
+
 import {
   Guardian,
   LocalGuardian,
@@ -60,11 +60,6 @@ const studentSchema = new Schema<Student, StudentModel>(
       unique: true,
       ref: 'User',
     },
-    password: { type: String, unique: true },
-    name: {
-      type: userSchema,
-      required: [true, 'name field is required'],
-    },
     gender: {
       type: String,
       enum: {
@@ -104,17 +99,6 @@ const studentSchema = new Schema<Student, StudentModel>(
   },
 );
 
-//using middleware hooks pre and post : its work on create method
-studentSchema.pre('save', async function () {
-  const data = this;
-  data.password = await bcrypt.hash(data.password, Number(config.salt_rounds));
-});
-
-studentSchema.post('save', async function (doc, next) {
-  doc.password = '';
-  next();
-});
-
 studentSchema.pre('find', async function (next) {
   this.find({ isDeleted: { $ne: true } });
 
@@ -127,9 +111,9 @@ studentSchema.pre('aggregate', async function (next) {
   next();
 });
 
-studentSchema.virtual('fullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
+// studentSchema.virtual('fullName').get(function () {
+//   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+// });
 // studentSchema.methods.isExists = async function (id: string) {
 //   const existingStudent = await StudentModel.findOne({ id });
 //   return existingStudent;

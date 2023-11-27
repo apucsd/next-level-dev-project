@@ -1,25 +1,21 @@
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import { userService } from './user.service';
-import { userValidation } from './user.validation';
-
-const createStudent = async (req: Request, res: Response) => {
+import sendResponse from '../../../middlewares/sendResponse';
+import httpStatus from 'http-status';
+const createStudent: RequestHandler = async (req, res, next) => {
   try {
     const { password, student } = req.body;
 
-    //   const userZodParseData = userValidation.userValidationSchema.parse(student);
-
     const result = await userService.createStudentIntoDB(password, student); //validated data getting from Joi
-    res.status(200).json({
+
+    sendResponse(res, {
       success: true,
+      statusCode: httpStatus.OK,
       message: 'Student created successfully',
       data: result,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Something went wrong',
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
