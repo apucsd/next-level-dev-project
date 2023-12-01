@@ -68,7 +68,7 @@ const studentSchema = new Schema<Student, StudentModel>(
       },
       required: true,
     },
-    dateOfBirth: { type: String, required: true },
+    dateOfBirth: { type: Date },
     contactNo: { type: String, required: true },
     emergencyNo: { type: String, required: true },
     bloodGroup: {
@@ -87,6 +87,7 @@ const studentSchema = new Schema<Student, StudentModel>(
       required: true,
     },
     profileImg: { type: String, required: true },
+    admissionSemester: { type: Schema.ObjectId, ref: 'AcademicSemester' },
     isDeleted: {
       type: Boolean,
       default: false,

@@ -26,7 +26,7 @@ export type Student = {
   password: string;
   name: UserName;
   gender: 'male' | 'female' | 'other';
-  dateOfBirth: string;
+  dateOfBirth: Date;
   contactNo: string;
   emergencyNo: string;
   bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
@@ -37,6 +37,7 @@ export type Student = {
   guardian: Guardian;
   localGuardian: LocalGuardian;
   profileImg?: string;
+  admissionSemester: Types.ObjectId;
   isDeleted: boolean;
 };
 
